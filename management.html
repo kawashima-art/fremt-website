@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="管理会計とキャッシュフロー管理の基礎。資金繰り表の整備からNPV・IRRによる投資判断まで、財務部門が経営に貢献するための知識を解説します。">
+  <title>管理会計とCF | Fremont Business Solution HK Ltd.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --c-ink:      #2C2C2A;
+      --c-ink-mid:  #5F5E5A;
+      --c-ink-soft: #888780;
+      --c-ink-pale: #B4B2A9;
+      --c-bg:       #FAFAF8;
+      --c-bg-2:     #F4F2ED;
+      --c-border:   rgba(44,44,42,0.12);
+      --c-border-2: rgba(44,44,42,0.22);
+      --font-sans:  'Noto Sans JP', sans-serif;
+      --font-serif: 'Noto Serif JP', serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--c-bg); color: var(--c-ink);
+      font-size: 15px; line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(250,250,248,0.92);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border-bottom: 0.5px solid var(--c-border);
+    }
+    .nav-inner {
+      max-width: 1080px; margin: 0 auto; padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; }
+    .nav-mark {
+      width: 38px; height: 38px; background: var(--c-ink);
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 4px; flex-shrink: 0;
+    }
+    .nav-mark span { color: #D3D1C7; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; }
+    .nav-name { font-size: 13px; font-weight: 500; line-height: 1.3; }
+    .nav-name small { display: block; font-size: 11px; color: var(--c-ink-soft); font-weight: 400; }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a { font-size: 13px; color: var(--c-ink-mid); transition: color .15s; }
+    .nav-links a:hover { color: var(--c-ink); }
+    .nav-cta {
+      font-size: 12px; padding: 8px 18px;
+      border: 0.5px solid var(--c-border-2);
+      border-radius: 4px; color: var(--c-ink);
+      transition: background .15s;
+    }
+    .nav-cta:hover { background: var(--c-bg-2); }
+
+    /* PAGE HEADER */
+    .page-header { border-bottom: 0.5px solid var(--c-border); padding: 64px 0 48px; }
+    .page-header-inner { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+    .breadcrumb {
+      font-size: 12px; color: var(--c-ink-soft);
+      margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+    }
+    .breadcrumb a { color: var(--c-ink-soft); transition: color .15s; }
+    .breadcrumb a:hover { color: var(--c-ink); }
+    .breadcrumb span { color: var(--c-ink-pale); }
+    .step-badge {
+      display: inline-block; font-size: 11px; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--c-ink-soft); margin-bottom: 16px;
+    }
+    .page-header h1 {
+      font-family: var(--font-serif);
+      font-size: 32px; font-weight: 500; line-height: 1.3; margin-bottom: 16px;
+    }
+    .page-header .lead {
+      font-size: 15px; color: var(--c-ink-mid); line-height: 1.8; max-width: 600px;
+    }
+
+    /* TOC */
+    .toc-wrap {
+      max-width: 1080px; margin: 0 auto; padding: 32px 40px;
+      border-bottom: 0.5px solid var(--c-border);
+    }
+    .toc-label {
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--c-ink-soft); margin-bottom: 16px;
+    }
+    .toc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; }
+    .toc-item {
+      padding: 14px 20px 14px 0;
+      border-right: 0.5px solid var(--c-border);
+      border-bottom: 0.5px solid var(--c-border);
+    }
+    .toc-item:nth-child(3n) { border-right: none; padding-right: 0; padding-left: 20px; }
+    .toc-item:nth-child(3n-1) { padding-left: 20px; }
+    .toc-item:nth-last-child(-n+3) { border-bottom: none; }
+    .toc-item a {
+      font-size: 13px; color: var(--c-ink-mid); transition: color .15s;
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .toc-item a:hover { color: var(--c-ink); }
+    .toc-num { font-size: 11px; color: var(--c-ink-pale); flex-shrink: 0; margin-top: 2px; }
+
+    /* CONTENT */
+    .content-wrap {
+      max-width: 1080px; margin: 0 auto; padding: 56px 40px 80px;
+      display: grid; grid-template-columns: 1fr 260px; gap: 64px; align-items: start;
+    }
+    .content h2 {
+      font-size: 20px; font-weight: 500;
+      margin: 56px 0 20px; padding-top: 56px;
+      border-top: 0.5px solid var(--c-border);
+    }
+    .content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .content h3 { font-size: 15px; font-weight: 500; margin: 28px 0 12px; }
+    .content p {
+      font-size: 14px; line-height: 1.9; color: var(--c-ink-mid); margin-bottom: 20px;
+    }
+    .content p:last-child { margin-bottom: 0; }
+
+    /* highlight */
+    .highlight-box {
+      background: var(--c-bg-2); border: 0.5px solid var(--c-border);
+      border-radius: 6px; padding: 24px 28px; margin: 24px 0 28px;
+    }
+    .highlight-box .hl-label {
+      font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--c-ink-soft); margin-bottom: 10px;
+    }
+    .highlight-box p { font-size: 14px; margin-bottom: 10px; }
+    .highlight-box p:last-child { margin-bottom: 0; }
+
+    /* two col */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0 28px; }
+    .col-card {
+      background: var(--c-bg-2); border: 0.5px solid var(--c-border);
+      border-radius: 6px; padding: 20px 22px;
+    }
+    .col-card h4 { font-size: 14px; font-weight: 500; margin-bottom: 10px; }
+    .col-card p { font-size: 13px; color: var(--c-ink-mid); line-height: 1.75; margin-bottom: 0; }
+
+    /* formula */
+    .formula-box {
+      border: 0.5px solid var(--c-border-2); border-radius: 6px;
+      padding: 18px 24px; margin: 16px 0 24px;
+      font-size: 13px; color: var(--c-ink); line-height: 1.8;
+    }
+    .formula-box strong { display: block; margin-bottom: 4px; color: var(--c-ink-soft); font-size: 11px; letter-spacing: 0.06em; }
+
+    /* list */
+    .content ul { list-style: none; margin: 16px 0 24px; }
+    .content ul li {
+      font-size: 14px; color: var(--c-ink-mid); line-height: 1.8;
+      padding: 9px 0 9px 18px; position: relative;
+      border-bottom: 0.5px solid var(--c-border);
+    }
+    .content ul li:last-child { border-bottom: none; }
+    .content ul li::before {
+      content: ''; position: absolute; left: 0; top: 18px;
+      width: 5px; height: 5px; border-radius: 50%; background: var(--c-ink-pale);
+    }
+
+    /* comparison table */
+    .compare-table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; font-size: 13px; }
+    .compare-table th {
+      background: var(--c-bg-2); padding: 12px 16px; text-align: left;
+      font-weight: 500; font-size: 12px; color: var(--c-ink-soft);
+      border-bottom: 0.5px solid var(--c-border-2);
+    }
+    .compare-table td {
+      padding: 12px 16px; color: var(--c-ink-mid); line-height: 1.65;
+      border-bottom: 0.5px solid var(--c-border);
+      vertical-align: top;
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+
+    /* SIDEBAR */
+    .sidebar { position: sticky; top: 80px; }
+    .sidebar-card {
+      background: var(--c-bg-2); border: 0.5px solid var(--c-border);
+      border-radius: 8px; padding: 24px; margin-bottom: 16px;
+    }
+    .sidebar-label {
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--c-ink-soft); margin-bottom: 16px;
+    }
+    .sidebar-nav { list-style: none; }
+    .sidebar-nav li { border-bottom: 0.5px solid var(--c-border); }
+    .sidebar-nav li:last-child { border-bottom: none; }
+    .sidebar-nav a {
+      display: block; padding: 10px 0;
+      font-size: 13px; color: var(--c-ink-mid); transition: color .15s;
+    }
+    .sidebar-nav a:hover { color: var(--c-ink); }
+    .sidebar-nav a.active { color: var(--c-ink); font-weight: 500; }
+    .sidebar-num { font-size: 11px; color: var(--c-ink-pale); margin-right: 8px; }
+
+    /* FOOTER */
+    footer { border-top: 0.5px solid var(--c-border); }
+    .footer-inner {
+      max-width: 1080px; margin: 0 auto; padding: 32px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-left { font-size: 12px; color: var(--c-ink-soft); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 12px; color: var(--c-ink-soft); transition: color .15s; }
+    .footer-links a:hover { color: var(--c-ink); }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .toc-grid { grid-template-columns: 1fr; }
+      .toc-item { border-right: none; padding: 12px 0 !important; }
+      .content-wrap { grid-template-columns: 1fr; gap: 40px; }
+      .two-col { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
+      <div class="nav-mark"><span>FBS</span></div>
+      <div class="nav-name">Fremont Business Solution<small>HK Ltd.</small></div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#services">サービス概要</a>
+      <a href="index.html#approach">支援の特徴</a>
+      <a href="index.html#about">考え方</a>
+      <a href="contact.html">お問い合わせ</a>
+    </div>
+    <a class="nav-cta" href="contact.html">無料相談を予約する</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="breadcrumb">
+      <a href="index.html">ホーム</a>
+      <span>/</span>
+      <span>管理会計とCF</span>
+    </div>
+    <div class="step-badge">Step 03 ／ 5段階の支援ステップ</div>
+    <h1>管理会計とキャッシュフロー管理</h1>
+    <p class="lead">損益だけでなく、資金の動きを把握する。資金繰り表の整備から投資判断のためのNPV・IRRまで、財務部門が経営に貢献するための管理会計の基礎を体系的に解説します。</p>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc-wrap">
+  <div class="toc-label">目次</div>
+  <div class="toc-grid">
+    <div class="toc-item"><a href="#cashflow"><span class="toc-num">1</span>資金繰り表の整備</a></div>
+    <div class="toc-item"><a href="#why-cf"><span class="toc-num">2</span>なぜキャッシュフローが大切か</a></div>
+    <div class="toc-item"><a href="#npv"><span class="toc-num">3</span>NPV（正味現在価値）</a></div>
+    <div class="toc-item"><a href="#irr"><span class="toc-num">4</span>IRR（内部収益率）</a></div>
+    <div class="toc-item"><a href="#dcf"><span class="toc-num">5</span>DCF法による投資判断</a></div>
+    <div class="toc-item"><a href="#mgmt"><span class="toc-num">6</span>管理会計の実務的な活用</span></a></div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content-wrap">
+  <article class="content">
+
+    <!-- 1 -->
+    <h2 id="cashflow">1. 資金繰り表の整備</h2>
+    <p>資金繰り表とは、一定期間における現金の入出金を時系列で管理する表です。損益計算書では「利益が出ている」状態でも、手元の現金が不足すれば企業は資金ショートに陥ります。この乖離を把握するために、資金繰り表の整備は不可欠です。</p>
+
+    <h3>日繰りと月別の整合性</h3>
+    <p>実務では、日次の資金繰り（日繰り）と月別の資金繰り表を連動させることが重要です。集計項目を統一することで、短期的な資金の動きと中期的な見通しを一貫して管理できます。</p>
+    <ul>
+      <li>日繰りと月別の資金繰り表の集計項目を合わせる</li>
+      <li>売上入金・仕入支払のサイクルを正確に反映させる</li>
+      <li>固定費・変動費を分けて管理し、資金需要を予測する</li>
+      <li>月末残高の予実管理を定期的に行う</li>
+    </ul>
+
+    <!-- 2 -->
+    <h2 id="why-cf">2. なぜキャッシュフローが大切か</h2>
+    <p>従来、企業の経営状況の把握は損益計算書で行うものとされてきました。損益計算書では利益の発生時点で金額が計上されるため、実際のキャッシュの流れとは乖離が生じます。</p>
+
+    <div class="two-col">
+      <div class="col-card">
+        <h4>損益計算書の限界</h4>
+        <p>売上は計上されていても、入金が先々になる場合、手元に現金がない状態が発生します。「黒字倒産」はこの乖離が原因です。</p>
+      </div>
+      <div class="col-card">
+        <h4>キャッシュフローの重要性</h4>
+        <p>実際に現金がいつ入り、いつ出るかを管理することで、資金ショートのリスクを事前に把握し、手を打つことができます。</p>
+      </div>
+    </div>
+    <p>キャッシュフロー計算書は、営業活動・投資活動・財務活動の3区分で現金の動きを示します。この3区分を理解することで、企業の実態をより正確に読み解くことができます。</p>
+
+    <!-- 3 -->
+    <h2 id="npv">3. NPV（正味現在価値）</h2>
+    <div class="highlight-box">
+      <div class="hl-label">定義</div>
+      <p>NPV（Net Present Value：正味現在価値）とは、投資によって将来生み出されるキャッシュフローを現在価値に割り引いた合計から、初期投資額を差し引いた値です。</p>
+    </div>
+
+    <div class="formula-box">
+      <strong>判断基準</strong>
+      NPV &gt; 0　→　投資する価値がある<br>
+      NPV &lt; 0　→　投資すべきではない
+    </div>
+
+    <p>NPVがプラスであれば、その投資は資本コストを上回るリターンをもたらすと判断できます。将来の100万円は現在の100万円と同じ価値ではないという「貨幣の時間価値」の概念を取り込んだ指標です。</p>
+
+    <h3>NPVの特徴</h3>
+    <ul>
+      <li>投資によって得られる利益の「絶対額」を金額で示す</li>
+      <li>貨幣の時間価値を考慮した、より実態に近い評価が可能</li>
+      <li>割引率（資本コスト）の設定に判断が必要</li>
+      <li>投資規模の異なる案件を比較する際は、規模も考慮が必要</li>
+    </ul>
+
+    <!-- 4 -->
+    <h2 id="irr">4. IRR（内部収益率）</h2>
+    <div class="highlight-box">
+      <div class="hl-label">定義</div>
+      <p>IRR（Internal Rate of Return：内部収益率）とは、NPVがゼロとなる割引率のことです。投資の「利回り」を示す指標で、ハードルレート（投資を行う上で最低限必要とされる利回り）と比較して投資判断を行います。</p>
+    </div>
+
+    <div class="formula-box">
+      <strong>判断基準</strong>
+      IRR &gt; ハードルレート　→　投資すべき<br>
+      IRR &lt; ハードルレート　→　投資すべきではない
+    </div>
+
+    <h3>NPVとIRRの使い分け</h3>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>指標</th>
+          <th>示すもの</th>
+          <th>特徴</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>NPV</strong></td>
+          <td>投資の絶対的な価値（金額）</td>
+          <td>「この投資でいくら儲かるか」を金額で示す。割引率の設定が必要。</td>
+        </tr>
+        <tr>
+          <td><strong>IRR</strong></td>
+          <td>投資の効率性（利回り・%）</td>
+          <td>「年利何％に相当するか」を示す。規模の異なる案件の比較に有効。</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>どちらか一方だけでなく、NPVとIRRを組み合わせて多角的に評価することが、より精度の高い投資判断につながります。</p>
+
+    <!-- 5 -->
+    <h2 id="dcf">5. DCF法による投資判断</h2>
+    <p>DCF法（Discounted Cash Flow法）は、将来のキャッシュフローを現在価値に割り引くことで投資価値を評価する手法です。NPVもIRRも、このDCF法をベースにした指標です。</p>
+    <p>Fremonでは、DCF法による設備投資の判断を行うExcel資料を例題として提供しています。具体的な計算の流れを実務レベルで習得することができます。</p>
+
+    <h3>DCF法を使った設備投資判断の流れ</h3>
+    <ul>
+      <li>投資によって生み出される将来キャッシュフローを予測する</li>
+      <li>資本コスト（ハードルレート）を設定する</li>
+      <li>将来キャッシュフローを現在価値に割り引く</li>
+      <li>NPVを計算し、投資判断を行う</li>
+      <li>IRRを算出し、ハードルレートと比較する</li>
+    </ul>
+
+    <!-- 6 -->
+    <h2 id="mgmt">6. 管理会計の実務的な活用</h2>
+    <p>管理会計とは、経営者や管理者が意思決定を行うための内部向けの会計です。財務会計（外部報告用）とは異なり、法律で定められた形式はなく、自社の経営に役立つ形で自由に設計できます。</p>
+
+    <div class="two-col">
+      <div class="col-card">
+        <h4>予実管理</h4>
+        <p>予算と実績を比較し、差異の原因を分析することで、経営の軌道修正に活かします。</p>
+      </div>
+      <div class="col-card">
+        <h4>原価管理</h4>
+        <p>製品・サービスごとの原価を把握し、収益性の改善や価格設定の判断に役立てます。</p>
+      </div>
+      <div class="col-card">
+        <h4>部門別損益</h4>
+        <p>事業部門・拠点ごとの損益を可視化し、経営資源の最適な配分を支援します。</p>
+      </div>
+      <div class="col-card">
+        <h4>経営ダッシュボード</h4>
+        <p>KPIを一覧できるダッシュボードを整備し、経営者が迅速に状況を把握できる環境をつくります。</p>
+      </div>
+    </div>
+    <p>財務スタッフが管理会計の視点を持つことで、単なる記帳・集計業務から、経営判断を支える分析業務へと役割を広げることができます。</p>
+
+  </article>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-label">5段階の支援ステップ</div>
+      <ul class="sidebar-nav">
+        <li><a href="database.html"><span class="sidebar-num">01</span>データベース整備</a></li>
+        <li><a href="report.html"><span class="sidebar-num">02</span>集計とレポート</a></li>
+        <li><a href="management.html" class="active"><span class="sidebar-num">03</span>管理会計とCF</a></li>
+        <li><a href="control.html"><span class="sidebar-num">04</span>内部統制</a></li>
+        <li><a href="#"><span class="sidebar-num">05</span>自動化と予測</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-card">
+      <div class="sidebar-label">お問い合わせ</div>
+      <p style="font-size:13px;color:var(--c-ink-mid);line-height:1.7;margin-bottom:16px;">管理会計・資金繰りのご相談は、お気軽にどうぞ。初回無料です。</p>
+      <a href="contact.html" style="display:block;text-align:center;font-size:13px;padding:10px;background:var(--c-ink);color:#F1EFE8;border-radius:4px;">相談を予約する</a>
+    </div>
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">© 2024 Fremont Business Solution HK Ltd. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="index.html">ホーム</a>
+      <a href="index.html#approach">支援の特徴</a>
+      <a href="contact.html">お問い合わせ</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
