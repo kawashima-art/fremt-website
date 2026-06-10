@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="財務会計スタッフのための集計スキルアップとレポート作成。Excel関数・ピボットテーブル・Power BIの活用方法を解説します。">
+  <title>集計とレポート | Fremont Business Solution HK Ltd.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --c-ink:      #2C2C2A;
+      --c-ink-mid:  #5F5E5A;
+      --c-ink-soft: #888780;
+      --c-ink-pale: #B4B2A9;
+      --c-bg:       #FAFAF8;
+      --c-bg-2:     #F4F2ED;
+      --c-border:   rgba(44,44,42,0.12);
+      --c-border-2: rgba(44,44,42,0.22);
+      --font-sans:  'Noto Sans JP', sans-serif;
+      --font-serif: 'Noto Serif JP', serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--c-bg); color: var(--c-ink);
+      font-size: 15px; line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(250,250,248,0.92);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border-bottom: 0.5px solid var(--c-border);
+    }
+    .nav-inner {
+      max-width: 1080px; margin: 0 auto; padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; }
+    .nav-mark {
+      width: 38px; height: 38px; background: var(--c-ink);
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 4px; flex-shrink: 0;
+    }
+    .nav-mark span { color: #D3D1C7; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; }
+    .nav-name { font-size: 13px; font-weight: 500; line-height: 1.3; }
+    .nav-name small { display: block; font-size: 11px; color: var(--c-ink-soft); font-weight: 400; }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a { font-size: 13px; color: var(--c-ink-mid); transition: color .15s; }
+    .nav-links a:hover { color: var(--c-ink); }
+    .nav-cta {
+      font-size: 12px; padding: 8px 18px;
+      border: 0.5px solid var(--c-border-2);
+      border-radius: 4px; color: var(--c-ink);
+      transition: background .15s;
+    }
+    .nav-cta:hover { background: var(--c-bg-2); }
+
+    /* PAGE HEADER */
+    .page-header { border-bottom: 0.5px solid var(--c-border); padding: 64px 0 48px; }
+    .page-header-inner { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+    .breadcrumb {
+      font-size: 12px; color: var(--c-ink-soft);
+      margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+    }
+    .breadcrumb a { color: var(--c-ink-soft); transition: color .15s; }
+    .breadcrumb a:hover { color: var(--c-ink); }
+    .breadcrumb span { color: var(--c-ink-pale); }
+    .step-badge {
+      display: inline-block; font-size: 11px; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--c-ink-soft); margin-bottom: 16px;
+    }
+    .page-header h1 {
+      font-family: var(--font-serif);
+      font-size: 32px; font-weight: 500; line-height: 1.3; margin-bottom: 16px;
+    }
+    .page-header .lead {
+      font-size: 15px; color: var(--c-ink-mid); line-height: 1.8; max-width: 600px;
+    }
+
+    /* TOC */
+    .toc-wrap {
+      max-width: 1080px; margin: 0 auto; padding: 32px 40px;
+      border-bottom: 0.5px solid var(--c-border);
+    }
+    .toc-label {
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--c-ink-soft); margin-bottom: 16px;
+    }
+    .toc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; }
+    .toc-item {
+      padding: 14px 20px 14px 0;
+      border-right: 0.5px solid var(--c-border);
+      border-bottom: 0.5px solid var(--c-border);
+    }
+    .toc-item:nth-child(3n) { border-right: none; padding-right: 0; padding-left: 20px; }
+    .toc-item:nth-child(3n-1) { padding-left: 20px; }
+    .toc-item:nth-last-child(-n+3) { border-bottom: none; }
+    .toc-item a {
+      font-size: 13px; color: var(--c-ink-mid); transition: color .15s;
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .toc-item a:hover { color: var(--c-ink); }
+    .toc-num { font-size: 11px; color: var(--c-ink-pale); flex-shrink: 0; margin-top: 2px; }
+
+    /* CONTENT */
+    .content-wrap {
+      max-width: 1080px; margin: 0 auto; padding: 56px 40px 80px;
+      display: grid; grid-template-columns: 1fr 260px; gap: 64px; align-items: start;
+    }
+    .content h2 {
+      font-size: 20px; font-weight: 500;
+      margin: 56px 0 20px; padding-top: 56px;
+      border-top: 0.5px solid var(--c-border);
+    }
+    .content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .content h3 { font-size: 15px; font-weight: 500; margin: 28px 0 12px; }
+    .content p {
+      font-size: 14px; line-height: 1.9; color: var(--c-ink-mid); margin-bottom: 20px;
+    }
+    .content p:last-child { margin-bottom: 0; }
+
+    /* case cards */
+    .case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0 28px; }
+    .case-card {
+      background: var(--c-bg-2); border: 0.5px solid var(--c-border);
+      border-radius: 6px; padding: 18px 20px;
+    }
+    .case-tag { font-size: 11px; color: var(--c-ink-soft); margin-bottom: 6px; letter-spacing: 0.04em; }
+    .case-title { font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+    .case-desc { font-size: 12px; color: var(--c-ink-mid); line-height: 1.65; }
+
+    /* highlight */
+    .highlight-box {
+      background: var(--c-bg-2); border: 0.5px solid var(--c-border);
+      border-radius: 6px; padding: 20px 24px; margin: 20px 0 28px;
+    }
+    .highlight-box p { font-size: 13px; margin-bottom: 10px; }
+    .highlight-box p:last-child { margin-bottom: 0; }
+
+    /* list */
+    .content ul { list-style: none; margin: 16px 0 24px; }
+    .content ul li {
+      font-size: 14px; color: var(--c-ink-mid); line-height: 1.8;
+      padding: 8px 0 8px 18px; position: relative;
+      border-bottom: 0.5px solid var(--c-border);
+    }
+    .content ul li:last-child { border-bottom: none; }
+    .content ul li::before {
+      content: ''; position: absolute; left: 0; top: 17px;
+      width: 5px; height: 5px; border-radius: 50%; background: var(--c-ink-pale);
+    }
+
+    /* sheet list */
+    .sheet-list { margin: 16px 0 24px; }
+    .sheet-item {
+      display: grid; grid-template-columns: 140px 1fr; gap: 16px;
+      padding: 10px 0; border-bottom: 0.5px solid var(--c-border);
+      font-size: 13px;
+    }
+    .sheet-item:last-child { border-bottom: none; }
+    .sheet-name { color: var(--c-ink); font-weight: 500; }
+    .sheet-desc { color: var(--c-ink-mid); line-height: 1.65; }
+
+    /* SIDEBAR */
+    .sidebar { position: sticky; top: 80px; }
+    .sidebar-card {
+      background: var(--c-bg-2); border: 0.5px solid var(--c-border);
+      border-radius: 8px; padding: 24px; margin-bottom: 16px;
+    }
+    .sidebar-label {
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--c-ink-soft); margin-bottom: 16px;
+    }
+    .sidebar-nav { list-style: none; }
+    .sidebar-nav li { border-bottom: 0.5px solid var(--c-border); }
+    .sidebar-nav li:last-child { border-bottom: none; }
+    .sidebar-nav a {
+      display: block; padding: 10px 0;
+      font-size: 13px; color: var(--c-ink-mid); transition: color .15s;
+    }
+    .sidebar-nav a:hover { color: var(--c-ink); }
+    .sidebar-nav a.active { color: var(--c-ink); font-weight: 500; }
+    .sidebar-num { font-size: 11px; color: var(--c-ink-pale); margin-right: 8px; }
+
+    /* FOOTER */
+    footer { border-top: 0.5px solid var(--c-border); }
+    .footer-inner {
+      max-width: 1080px; margin: 0 auto; padding: 32px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-left { font-size: 12px; color: var(--c-ink-soft); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 12px; color: var(--c-ink-soft); transition: color .15s; }
+    .footer-links a:hover { color: var(--c-ink); }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .toc-grid { grid-template-columns: 1fr; }
+      .toc-item { border-right: none; padding: 12px 0 !important; }
+      .content-wrap { grid-template-columns: 1fr; gap: 40px; }
+      .case-grid { grid-template-columns: 1fr; }
+      .sheet-item { grid-template-columns: 1fr; gap: 4px; }
+      .sidebar { position: static; }
+      .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
+      <div class="nav-mark"><span>FBS</span></div>
+      <div class="nav-name">Fremont Business Solution<small>HK Ltd.</small></div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#services">サービス概要</a>
+      <a href="index.html#approach">支援の特徴</a>
+      <a href="index.html#about">考え方</a>
+      <a href="contact.html">お問い合わせ</a>
+    </div>
+    <a class="nav-cta" href="contact.html">無料相談を予約する</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="breadcrumb">
+      <a href="index.html">ホーム</a>
+      <span>/</span>
+      <span>集計とレポート</span>
+    </div>
+    <div class="step-badge">Step 02 ／ 5段階の支援ステップ</div>
+    <h1>集計スキルのアップと、<br>伝わるレポートの作り方</h1>
+    <p class="lead">財務・会計スタッフが知っておくべきExcel関数から、ピボットテーブル・パワーピボット・Power BIまで。データを経営判断に活かせるレポートへと変換するスキルを体系的に習得します。</p>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc-wrap">
+  <div class="toc-label">目次</div>
+  <div class="toc-grid">
+    <div class="toc-item"><a href="#func1"><span class="toc-num">1</span>VLOOKUP関数とSUMIF関数</a></div>
+    <div class="toc-item"><a href="#func2"><span class="toc-num">2</span>COUNTIF関数とSUBTOTAL関数</a></div>
+    <div class="toc-item"><a href="#func3"><span class="toc-num">3</span>IF関数とIFS関数</a></div>
+    <div class="toc-item"><a href="#pivot"><span class="toc-num">4</span>ピボットテーブルの優秀性</a></div>
+    <div class="toc-item"><a href="#powerpivot"><span class="toc-num">5</span>パワーピボットの優秀性</a></div>
+    <div class="toc-item"><a href="#powerbi"><span class="toc-num">6</span>Power BIの優秀性</a></div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content-wrap">
+  <article class="content">
+
+    <!-- 1 -->
+    <h2 id="func1">1. VLOOKUP関数とSUMIF関数</h2>
+    <p>財務スタッフが実務でVLOOKUP関数とSUMIF関数を使う場面を、具体的なケースで紹介します。</p>
+
+    <div class="case-grid">
+      <div class="case-card">
+        <div class="case-tag">Case 1 ／ VLOOKUP</div>
+        <div class="case-title">納品書の自動転記</div>
+        <div class="case-desc">プルダウンリストで品名を選ぶと、単価・金額・合計金額が自動計算される発注書を作成します。</div>
+      </div>
+      <div class="case-card">
+        <div class="case-tag">Case 2 ／ VLOOKUP</div>
+        <div class="case-title">売価リストへ原価情報を追加</div>
+        <div class="case-desc">原価マスタから原価データを製品販売リストへ自動転記し、製品ごとの原価率を表示します。</div>
+      </div>
+      <div class="case-card">
+        <div class="case-tag">Case 3 ／ SUMIF</div>
+        <div class="case-title">受注確度別の年間販売計画集計</div>
+        <div class="case-desc">SUMIF関数を使い、受注確度ごとに月別の販売計画を集計する年間販売計画を作成します。</div>
+      </div>
+      <div class="case-card">
+        <div class="case-tag">Case 4 ／ 応用</div>
+        <div class="case-title">Bank Statementから費用科目を自動集計</div>
+        <div class="case-desc">VLOOKUPで科目を関連付け、SUMIFで経費科目ごとに集計する実務的なケースです。</div>
+      </div>
+    </div>
+
+    <h3>Case 4の詳細な流れ</h3>
+    <div class="sheet-list">
+      <div class="sheet-item"><span class="sheet-name">Case 4.1</span><span class="sheet-desc">相手先（顧客・供応商）の列を含むオリジナルのBank Statement</span></div>
+      <div class="sheet-item"><span class="sheet-name">Case 4.2</span><span class="sheet-desc">「科目」と「科目名称」の列を追加する</span></div>
+      <div class="sheet-item"><span class="sheet-name">Case 4.3</span><span class="sheet-desc">相手先マスタの作成</span></div>
+      <div class="sheet-item"><span class="sheet-name">Case 4.4</span><span class="sheet-desc">VLOOKUPで相手先から「科目」と「科目名称」を関連付け</span></div>
+      <div class="sheet-item"><span class="sheet-name">Case 4.5</span><span class="sheet-desc">SUMIFで経費科目ごとに集計 → 集計表の完成</span></div>
+      <div class="sheet-item"><span class="sheet-name">Case 4.6</span><span class="sheet-desc">ピボットテーブルでVLOOKUP・SUMIFの集計を代用する方法</span></div>
+    </div>
+
+    <!-- 2 -->
+    <h2 id="func2">2. COUNTIF関数とSUBTOTAL関数</h2>
+    <p>COUNTIF関数はデータを条件でカウントしたり、条件分岐の処理をさせたりする使い勝手の良い関数です。またSUM関数で集計がうまくできない場面では、SUBTOTAL関数が有効です。</p>
+
+    <div class="case-grid">
+      <div class="case-card">
+        <div class="case-tag">Case 5 ／ COUNTIF</div>
+        <div class="case-title">条件に一致するデータを数える</div>
+        <div class="case-desc">件数カウントに加え、IF関数との組み合わせで条件に合った場合の分岐処理も行います。</div>
+      </div>
+      <div class="case-card">
+        <div class="case-tag">Case 6 ／ SUBTOTAL</div>
+        <div class="case-title">グループ別の集計</div>
+        <div class="case-desc">各グループごとの合計・平均・件数・最大値・最小値などをSUBTOTAL関数で集計します。</div>
+      </div>
+      <div class="case-card">
+        <div class="case-tag">Case 7 ／ SUBTOTAL＋フィルター</div>
+        <div class="case-title">フィルターと組み合わせた集計</div>
+        <div class="case-desc">フィルターを掛けた分だけを集計できます。SUM関数では対応できない操作です。</div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <h2 id="func3">3. IF関数とIFS関数</h2>
+    <p>IF関数は条件を論理式で指定し、真の場合と偽の場合で異なる値を返します。ネスト（入れ子式）にすることで3通り以上の場合分けも処理できます。</p>
+
+    <div class="highlight-box">
+      <p><strong>IF関数の書式</strong><br>=IF(論理式, [値が真の場合], [値が偽の場合])</p>
+      <p><strong>ネストした場合</strong><br>=IF(論理式, [真の場合], IF(論理式, [真の場合], [偽の場合]))</p>
+      <p><strong>IFS関数（複数条件）</strong><br>=IFS(論理式1, [1が真の場合], 論理式2, [2が真の場合], …, TRUE, [条件を満たさない時])</p>
+    </div>
+    <p>IFS関数はIF関数の進化版で、ネストせずに複数の条件を処理できます。</p>
+
+    <!-- 4 -->
+    <h2 id="pivot">4. ピボットテーブルの優秀性</h2>
+    <p>ピボットテーブルはExcelでクロス集計を簡単に作成できる強力な機能です。関数を使わずマウス操作だけで大量のデータを分析できます。</p>
+    <ul>
+      <li>元のデータを更新するだけで、クロス集計表を自動アップデートできる</li>
+      <li>集計項目の入れ替えが簡単かつ視覚的に行える</li>
+      <li>PL作成や経費比較分析などの実務資料を効率的に作成できる</li>
+    </ul>
+
+    <h3>ピボットテーブルで作成できる資料の例</h3>
+    <div class="sheet-list">
+      <div class="sheet-item"><span class="sheet-name">科目余額表</span><span class="sheet-desc">試算表データをリスト形式に変換してテーブル化する</span></div>
+      <div class="sheet-item"><span class="sheet-name">PL</span><span class="sheet-desc">売上高・売上原価・販管費をピボットテーブルで集計</span></div>
+      <div class="sheet-item"><span class="sheet-name">経費比較①</span><span class="sheet-desc">月ごとの累計を表示</span></div>
+      <div class="sheet-item"><span class="sheet-name">経費比較②</span><span class="sheet-desc">前月比の列にデータバー（増減を色分け）を設定</span></div>
+      <div class="sheet-item"><span class="sheet-name">経費比較③</span><span class="sheet-desc">占有率の列を追加し、タイムラインスライサーを設定</span></div>
+    </div>
+
+    <!-- 5 -->
+    <h2 id="powerpivot">5. パワーピボットの優秀性</h2>
+    <p>パワーピボットはピボットテーブルの上位機能で、複数のテーブルをリレーションシップで関連付けられる点が最大の特徴です。</p>
+    <ul>
+      <li>取引テーブルにデータを追加するだけで、月次集計が自動更新される</li>
+      <li>メジャーやDAX関数を使うことで、分析の幅が格段に広がる</li>
+    </ul>
+
+    <h3>例題で作成できる資料（3年分の売上データを使用）</h3>
+    <div class="case-grid">
+      <div class="case-card">
+        <div class="case-title">ジャンル別売上推移</div>
+      </div>
+      <div class="case-card">
+        <div class="case-title">ジャンル別収益性分析</div>
+      </div>
+      <div class="case-card">
+        <div class="case-title">ジャンル別売上割合</div>
+      </div>
+      <div class="case-card">
+        <div class="case-title">当期売上累計・前年同期比・予算実績対比</div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <h2 id="powerbi">6. Power BIの優秀性</h2>
+    <p>Power BI Desktopは無料でダウンロード・インストールできるBIツールです。プログラミングの知識がなくても、データの抽出から分析・レポート（ダッシュボード）・グラフの作成までが可能です。</p>
+    <ul>
+      <li>各種データ処理（抽出・変換・統合など）</li>
+      <li>視覚化された分かりやすいレポートの作成</li>
+      <li>作成したレポートを定期的に自動更新</li>
+    </ul>
+    <p>例題では、中国市場における4年間の製品別売上データを、棒グラフ・線グラフ・円グラフで可視化するレポートを作成します。年度・地域・製品カテゴリなどの切り口でシート内の各グラフを連動して表示することができます。</p>
+
+  </article>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-label">5段階の支援ステップ</div>
+      <ul class="sidebar-nav">
+        <li><a href="database.html"><span class="sidebar-num">01</span>データベース整備</a></li>
+        <li><a href="report.html" class="active"><span class="sidebar-num">02</span>集計とレポート</a></li>
+        <li><a href="#"><span class="sidebar-num">03</span>管理会計とCF</a></li>
+        <li><a href="#"><span class="sidebar-num">04</span>内部統制</a></li>
+        <li><a href="#"><span class="sidebar-num">05</span>自動化と予測</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-card">
+      <div class="sidebar-label">お問い合わせ</div>
+      <p style="font-size:13px;color:var(--c-ink-mid);line-height:1.7;margin-bottom:16px;">集計・レポート体制のご相談は、お気軽にどうぞ。初回無料です。</p>
+      <a href="contact.html" style="display:block;text-align:center;font-size:13px;padding:10px;background:var(--c-ink);color:#F1EFE8;border-radius:4px;">相談を予約する</a>
+    </div>
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">© 2024 Fremont Business Solution HK Ltd. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="index.html">ホーム</a>
+      <a href="index.html#approach">支援の特徴</a>
+      <a href="contact.html">お問い合わせ</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
