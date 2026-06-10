@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="会社のルールに実効性を持たせるための内部統制。予算スラックとモラルハザードの観点から解説します。">
+  <title>内部統制 | Fremont Business Solution HK Ltd.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --c-ink:      #2C2C2A;
+      --c-ink-mid:  #5F5E5A;
+      --c-ink-soft: #888780;
+      --c-ink-pale: #B4B2A9;
+      --c-bg:       #FAFAF8;
+      --c-bg-2:     #F4F2ED;
+      --c-border:   rgba(44,44,42,0.12);
+      --c-border-2: rgba(44,44,42,0.22);
+      --font-sans:  'Noto Sans JP', sans-serif;
+      --font-serif: 'Noto Serif JP', serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--c-bg); color: var(--c-ink);
+      font-size: 15px; line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(250,250,248,0.92);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border-bottom: 0.5px solid var(--c-border);
+    }
+    .nav-inner {
+      max-width: 1080px; margin: 0 auto; padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; }
+    .nav-mark {
+      width: 38px; height: 38px; background: var(--c-ink);
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 4px; flex-shrink: 0;
+    }
+    .nav-mark span { color: #D3D1C7; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; }
+    .nav-name { font-size: 13px; font-weight: 500; line-height: 1.3; }
+    .nav-name small { display: block; font-size: 11px; color: var(--c-ink-soft); font-weight: 400; }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a { font-size: 13px; color: var(--c-ink-mid); transition: color .15s; }
+    .nav-links a:hover { color: var(--c-ink); }
+    .nav-cta {
+      font-size: 12px; padding: 8px 18px;
+      border: 0.5px solid var(--c-border-2);
+      border-radius: 4px; color: var(--c-ink);
+      transition: background .15s;
+    }
+    .nav-cta:hover { background: var(--c-bg-2); }
+
+    /* PAGE HEADER */
+    .page-header { border-bottom: 0.5px solid var(--c-border); padding: 64px 0 48px; }
+    .page-header-inner { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+    .breadcrumb {
+      font-size: 12px; color: var(--c-ink-soft);
+      margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+    }
+    .breadcrumb a { color: var(--c-ink-soft); transition: color .15s; }
+    .breadcrumb a:hover { color: var(--c-ink); }
+    .breadcrumb span { color: var(--c-ink-pale); }
+    .step-badge {
+      display: inline-block; font-size: 11px; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--c-ink-soft); margin-bottom: 16px;
+    }
+    .page-header h1 {
+      font-family: var(--font-serif);
+      font-size: 32px; font-weight: 500; line-height: 1.3; margin-bottom: 16px;
+    }
+    .page-header .lead {
+      font-size: 15px; color: var(--c-ink-mid); line-height: 1.8; max-width: 600px;
+    }
+
+    /* CONTENT */
+    .content-wrap {
+      max-width: 1080px; margin: 0 auto; padding: 56px 40px 80px;
+      display: grid; grid-template-columns: 1fr 260px; gap: 64px; align-items: start;
+    }
+    .content h2 {
+      font-size: 20px; font-weight: 500;
+      margin: 56px 0 20px; padding-top: 56px;
+      border-top: 0.5px solid var(--c-border);
+    }
+    .content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .content h3 { font-size: 15px; font-weight: 500; margin: 28px 0 12px; }
+    .content p {
+      font-size: 14px; line-height: 1.9; color: var(--c-ink-mid); margin-bottom: 20px;
+    }
+    .content p:last-child { margin-bottom: 0; }
+
+    /* highlight */
+    .highlight-box {
+      background: var(--c-bg-2); border: 0.5px solid var(--c-border);
+      border-radius: 6px; padding: 24px 28px; margin: 24px 0 28px;
+    }
+    .highlight-box .hl-label {
+      font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--c-ink-soft); margin-bottom: 10px;
+    }
+    .highlight-box p { font-size: 14px; margin-bottom: 0; }
+
+    /* two col */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0 28px; }
+    .col-card {
+      background: var(--c-bg-2); border: 0.5px solid var(--c-border);
+      border-radius: 6px; padding: 20px 22px;
+    }
+    .col-card h4 { font-size: 14px; font-weight: 500; margin-bottom: 10px; }
+    .col-card p { font-size: 13px; color: var(--c-ink-mid); line-height: 1.75; margin-bottom: 0; }
+
+    /* list */
+    .content ul { list-style: none; margin: 16px 0 24px; }
+    .content ul li {
+      font-size: 14px; color: var(--c-ink-mid); line-height: 1.8;
+      padding: 9px 0 9px 18px; position: relative;
+      border-bottom: 0.5px solid var(--c-border);
+    }
+    .content ul li:last-child { border-bottom: none; }
+    .content ul li::before {
+      content: ''; position: absolute; left: 0; top: 18px;
+      width: 5px; height: 5px; border-radius: 50%; background: var(--c-ink-pale);
+    }
+
+    /* SIDEBAR */
+    .sidebar { position: sticky; top: 80px; }
+    .sidebar-card {
+      background: var(--c-bg-2); border: 0.5px solid var(--c-border);
+      border-radius: 8px; padding: 24px; margin-bottom: 16px;
+    }
+    .sidebar-label {
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--c-ink-soft); margin-bottom: 16px;
+    }
+    .sidebar-nav { list-style: none; }
+    .sidebar-nav li { border-bottom: 0.5px solid var(--c-border); }
+    .sidebar-nav li:last-child { border-bottom: none; }
+    .sidebar-nav a {
+      display: block; padding: 10px 0;
+      font-size: 13px; color: var(--c-ink-mid); transition: color .15s;
+    }
+    .sidebar-nav a:hover { color: var(--c-ink); }
+    .sidebar-nav a.active { color: var(--c-ink); font-weight: 500; }
+    .sidebar-num { font-size: 11px; color: var(--c-ink-pale); margin-right: 8px; }
+
+    /* FOOTER */
+    footer { border-top: 0.5px solid var(--c-border); }
+    .footer-inner {
+      max-width: 1080px; margin: 0 auto; padding: 32px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-left { font-size: 12px; color: var(--c-ink-soft); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 12px; color: var(--c-ink-soft); transition: color .15s; }
+    .footer-links a:hover { color: var(--c-ink); }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .content-wrap { grid-template-columns: 1fr; gap: 40px; }
+      .two-col { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
+      <div class="nav-mark"><span>FBS</span></div>
+      <div class="nav-name">Fremont Business Solution<small>HK Ltd.</small></div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#services">サービス概要</a>
+      <a href="index.html#approach">支援の特徴</a>
+      <a href="index.html#about">考え方</a>
+      <a href="contact.html">お問い合わせ</a>
+    </div>
+    <a class="nav-cta" href="contact.html">無料相談を予約する</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="breadcrumb">
+      <a href="index.html">ホーム</a>
+      <span>/</span>
+      <span>内部統制</span>
+    </div>
+    <div class="step-badge">Step 04 ／ 5段階の支援ステップ</div>
+    <h1>会社のルールに<br>実効性を持たせることの重要性</h1>
+    <p class="lead">内部統制はルールをつくるだけでは機能しません。組織の中で実際に機能させるためには、人間の行動原理を理解した上で仕組みを設計することが不可欠です。</p>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content-wrap">
+  <article class="content">
+
+    <h2>内部統制とは何か</h2>
+    <p>内部統制とは、組織が目標を達成するために、業務の有効性・効率性、財務報告の信頼性、法令の遵守を確保するための仕組みです。ルールや規程を整備するだけでなく、それが現場で実際に守られ、機能している状態をつくることが本来の目的です。</p>
+    <p>しかし実際には、制度として整備されていても形骸化してしまうケースが少なくありません。その背景には、組織の中に潜む「予算スラック」と「モラルハザード」という二つの問題があります。</p>
+
+    <h2 id="slack">予算スラック</h2>
+    <div class="highlight-box">
+      <div class="hl-label">定義</div>
+      <p>予算スラックとは、予算編成の過程で、担当者が意図的に達成しやすい目標（低い売上目標・高いコスト目標）を設定することで生まれる「ゆとり」のことです。</p>
+    </div>
+    <p>予算は本来、組織の目標を数字に落とし込み、リソースを適切に配分するためのツールです。しかし、予算の達成が評価や報酬に直結する場合、担当者は自己防衛的に達成しやすい数字を積み上げようとします。</p>
+
+    <h3>予算スラックが生まれる背景</h3>
+    <div class="two-col">
+      <div class="col-card">
+        <h4>情報の非対称性</h4>
+        <p>現場担当者は経営層よりも実態をよく知っています。その情報格差を利用して、余裕のある目標を設定しやすい状況が生まれます。</p>
+      </div>
+      <div class="col-card">
+        <h4>評価制度との連動</h4>
+        <p>予算達成が評価に強く結びついていると、挑戦的な目標よりも確実に達成できる目標を選ぶインセンティブが働きます。</p>
+      </div>
+    </div>
+
+    <h3>予算スラックへの対処</h3>
+    <ul>
+      <li>予算編成プロセスへの経営層の関与を高め、根拠の説明責任を求める</li>
+      <li>実績と予算の乖離を定期的にレビューし、スラックを可視化する</li>
+      <li>達成だけでなく、プロセスや改善活動も評価対象に含める</li>
+      <li>ボトムアップとトップダウンを組み合わせた予算編成プロセスを設計する</li>
+    </ul>
+
+    <h2 id="moral">モラルハザード</h2>
+    <div class="highlight-box">
+      <div class="hl-label">定義</div>
+      <p>モラルハザードとは、自分の行動の結果を他者が負担する状況において、当事者が本来よりもリスクの高い行動や怠慢な行動をとる現象のことです。</p>
+    </div>
+    <p>組織においては、担当者が「失敗しても会社が責任を取る」「誰かが確認するだろう」という意識を持つことで、注意義務が低下したり、ルールが軽視されたりする状況がモラルハザードです。</p>
+
+    <h3>組織内でモラルハザードが起きやすい場面</h3>
+    <div class="two-col">
+      <div class="col-card">
+        <h4>承認プロセスの形骸化</h4>
+        <p>上長の承認が「通過儀礼」になっており、内容を精査せずに承認が行われている状態。</p>
+      </div>
+      <div class="col-card">
+        <h4>職務分離の不徹底</h4>
+        <p>起票・承認・記帳が同一人物によって行われ、牽制機能が働いていない状態。</p>
+      </div>
+      <div class="col-card">
+        <h4>監視の欠如</h4>
+        <p>定期的なチェックや内部監査が行われておらず、問題が発見されにくい環境。</p>
+      </div>
+      <div class="col-card">
+        <h4>責任の曖昧さ</h4>
+        <p>業務の責任範囲が不明確で、問題が起きても「誰の責任か」が特定されにくい体制。</p>
+      </div>
+    </div>
+
+    <h3>モラルハザードへの対処</h3>
+    <ul>
+      <li>職務分離の原則を徹底し、牽制が機能する体制を設計する</li>
+      <li>承認プロセスに実質的な確認作業を組み込む</li>
+      <li>定期的な内部監査や自己点検の仕組みを導入する</li>
+      <li>問題を報告しやすい組織風土と仕組みをつくる</li>
+      <li>責任範囲を明文化し、個人の説明責任を明確にする</li>
+    </ul>
+
+    <h2>内部統制を「機能させる」ために</h2>
+    <p>予算スラックとモラルハザードはどちらも、人間の行動原理に根ざした問題です。ルールを設けるだけでは解決しません。仕組みの設計、評価制度との整合、組織風土の醸成を一体的に進めることが、実効性ある内部統制への道です。</p>
+    <p>Fremonは、現場の実態に即した内部統制の整備と定着を支援します。制度の設計から運用の定着まで、一貫してサポートします。</p>
+
+  </article>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-label">5段階の支援ステップ</div>
+      <ul class="sidebar-nav">
+        <li><a href="database.html"><span class="sidebar-num">01</span>データベース整備</a></li>
+        <li><a href="report.html"><span class="sidebar-num">02</span>集計とレポート</a></li>
+        <li><a href="#"><span class="sidebar-num">03</span>管理会計とCF</a></li>
+        <li><a href="control.html" class="active"><span class="sidebar-num">04</span>内部統制</a></li>
+        <li><a href="#"><span class="sidebar-num">05</span>自動化と予測</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-card">
+      <div class="sidebar-label">お問い合わせ</div>
+      <p style="font-size:13px;color:var(--c-ink-mid);line-height:1.7;margin-bottom:16px;">内部統制の整備・運用についてのご相談は、お気軽にどうぞ。初回無料です。</p>
+      <a href="contact.html" style="display:block;text-align:center;font-size:13px;padding:10px;background:var(--c-ink);color:#F1EFE8;border-radius:4px;">相談を予約する</a>
+    </div>
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">© 2024 Fremont Business Solution HK Ltd. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="index.html">ホーム</a>
+      <a href="index.html#approach">支援の特徴</a>
+      <a href="contact.html">お問い合わせ</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
